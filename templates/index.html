@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Invoice App</h1>
+<h2 id="message"></h2>
+<form id="post_form" >
+    {% csrf_token %}
+<input type="text" name="first_name" id="first_name" placeholder="Enter First Name">
+<input type="text" name="last_name" id="last_name" placeholder="Enter Last Name">
+<input type="number" name="quantity" id="quantity" placeholder="Quantity">
+<input type="submit" value="Submit">
+</form>
+
+<script type="text/javascript">
+ $(document).on('submit','#post_form',function(e){
+      e.preventDefault()
+
+      
+    $.ajax({
+        type:'POST',
+        url:'/create',
+        data:{
+            first_name : $('#first_name').val(),
+            last_name : $('#last_name').val(),
+            quantity: $('#quantity').val(),
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+        },
+        success:function(data){
+           $('#message').html(data)
+           
+        },
+
+    })
+    document.getElementById('first_name').value=''
+    document.getElementById('last_name').value=''
+    document.getElementById('quantity').value=''
+})
+
+</script>
+{% endblock content %}
+
+
